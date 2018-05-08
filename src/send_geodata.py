@@ -3,7 +3,9 @@ import requests
 from datetime import datetime, timezone
 import pathlib
 
-
+base = "/home/pi/get_gps_python/"
+user = "wasser_pi"
+pw = "send_to_influx_pi!"
 
 data_list = listdir('/home/pi/get_gps_python/new')
 now = datetime.now(timezone.utc)
@@ -15,13 +17,13 @@ url = influx + '/write?db=' + db
 
 
 for file in data_list:
-    with open ('/home/pi/get_gps_python/new/' + file, "r") as data_point:
+    with open (base + "new/" + file, "r") as data_point:
         data=data_point.readlines()
     for line in data:
-        r = requests.post(url, data=line)
+        r = requests.post(url, data=line, auth=(user,pw))
         if '204' == str(r.status_code):
             dt = datetime.fromtimestamp(int(file) // 1000000000)
             dt_s = dt.strftime('%Y-%m-%d')
-            makedirs("/home/pi/get_gps_python/" + dt_s, exist_ok=True)
-            rename("/home/pi/get_gps_python/new/" + file, "/home/pi/get_gps_python/" + dt_s + "/" + file)
+            makedirs(base + "old" , exist_ok=True)
+            rename(base + "new/" + file, base + "old/" + file)
 

@@ -4,14 +4,14 @@ from datetime import datetime, timezone
 import pathlib
 
 base = "/home/pi/get_gps_python/"
-user = "wasser_pi"
-pw = "send_to_influx_pi!"
+user = <nutzer>
+pw = <password>
 
 data_list = listdir('/home/pi/get_gps_python/new')
 now = datetime.now(timezone.utc)
 
 db = 'collected_data'
-influx = 'https://influx.rotekekse.de'
+influx = <link_of_influx_api>
 
 url = influx + '/write?db=' + db
 
